@@ -20,5 +20,12 @@ typedef struct {
     u_int citations;
 } Publication;
 
+typedef struct StackNode {
+    Publication data;
+    struct StackNode* next;
+} StackNode;
+
+typedef StackNode* Stack;
+
 int read_publication_csv(FILE *file, Publication *p);
 
