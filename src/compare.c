@@ -1,4 +1,4 @@
-#include "compaer.h"
+#include "compare.h"
 
 int compare_publications(const Publication* p1, const Publication* p2) {
     int cmp;
