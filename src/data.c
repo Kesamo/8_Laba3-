@@ -60,16 +60,4 @@ int read_publication_csv(FILE *file, Publication *pub){
 
     return 1;
 
-
-    printf("Title: %s\n", pub->title);
-    printf("Author surname: %s\n", pub->author_surname);
-    printf("Author initials: %s\n", pub->author_initials);
-    printf("Journal: %s\n", pub->journal);
-    printf("Year: %d\n", pub->year);
-    printf("Volume: %d\n", pub->volume);
-    printf("In RINC: %s\n", pub->in_rinc ? "YES" : "NO");
-    printf("Pages: %d\n", pub->pages);
-    printf("Citations: %d\n", pub->citations);
-
-
 }

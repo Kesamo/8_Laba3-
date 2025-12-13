@@ -9,7 +9,7 @@
  * @param pub 
  */
 
-void stack_push(Stack* s, const Publication* pub) {
+void stack_push(Stack *s, const Publication *pub) {
     StackNode* node = malloc(sizeof(StackNode));
     node->data = *pub;
     node->next = *s;
@@ -32,8 +32,12 @@ void stack_init(Stack* s) {
  * @param top 
  */
 
-void show_stack_csv(const StackNode* top) {
+void show_stack_csv(const Stack top) {
     const StackNode* current = top;
+    if (stack_empty(top)) {
+        printf("Стэк пуст\n");
+        return;
+    }
     while (current != NULL) {
         printf("%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
             current->data.title,
@@ -57,12 +61,13 @@ void show_stack_csv(const StackNode* top) {
  * @param s 
  */
 
-void stack_pop(Stack* s) {
-    if (*s == NULL) {
-        return;
+int stack_pop(Stack* s) {
+    if (stack_empty(*s)) {
+        printf("Стэк пуст\n");
+        return 1;
     }
 
-    StackNode* old_top = *s;
+    StackNode *old_top = *s;
     *s = (*s)->next;
 
     printf("Deleted: %s,%s,%s,%s,%u,%u,%s,%u,%u\n",
@@ -78,4 +83,55 @@ void stack_pop(Stack* s) {
     );
 
     free(old_top);
+    return 0;
 }
+
+
+
+bool stack_empty(Stack s) {
+    return s == NULL;
+}
+
+
+size_t stack_size(Stack s) {
+    size_t count = 0;
+    StackNode* current = s;
+    while (current) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+int stack_peek(Stack s, Publication* out_pub) {
+    if (stack_empty(s)) return 0;
+    *out_pub = s->data;
+    return 1;
+}
+
+
+
+
+int stack_clear(Stack *s){
+    int check = 0;
+    if (s == NULL){
+        printf("Ошибка: передан нулевой указатель на стек\n");
+        return 1;
+    }
+    while(*s != NULL){
+        check = stack_pop(s);
+        if(check != 0){
+            return check;
+        }
+    }
+    printf("Стэк очищен\n");
+    return 0;
+
+}
+
+
+
+
+
+
+

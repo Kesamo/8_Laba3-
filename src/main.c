@@ -22,15 +22,49 @@ int main (){
 
 
     Stack my_stack;
+    puts("Инациализация стека");
     stack_init(&my_stack);
 
+    puts("Добавление элементов");
+    stack_push(&my_stack, &p);
     stack_push(&my_stack, &p1);
     stack_push(&my_stack, &p2);
 
+    printf("Количество элементов в стэке: ");
+    printf("%d\n",stack_size(my_stack));
+
+    if (stack_empty(my_stack)) {
+        printf("Стэк пуст\n");
+    }
+    else{
+        printf("Стэк не пуст\n");
+    }
+
+    puts("Вывод стэка");
     show_stack_csv(my_stack);
 
+    puts("Удаление элемента");
     stack_pop(&my_stack);
 
+    puts("Вывод стэка после удаление первого элемента");
     show_stack_csv(my_stack);
+
+    puts("Очистака стека и памяти");
+    stack_clear(&my_stack);
+
+    printf("Количество в стэке: ");
+    printf("%d\n",stack_size(my_stack));
+
+    puts("Проверка что выводит функция когда стэк пуст");
+    show_stack_csv(my_stack);
+
+    if (stack_empty(my_stack)) {
+        printf("Стэк пуст\n");
+    }
+    else{
+        printf("Стэк не пуст\n");
+    }
+
+
 
 }
