@@ -93,7 +93,7 @@ bool stack_empty(Stack s) {
 }
 
 
-size_t stack_size(Stack s) {
+size_t stack_size(Stack s) { 
     size_t count = 0;
     StackNode* current = s;
     while (current) {
