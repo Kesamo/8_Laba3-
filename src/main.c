@@ -7,6 +7,8 @@
 #include <time.h>
 #include "data.h"
 #include "stack.h"
+#include "compare.h"
+#include "sort.h"
 
 int main (){
 
@@ -18,7 +20,12 @@ int main (){
     read_publication_csv(stdin,&p);
 
     Publication p1 = {"ИИ", "Иванов", "А.Б.", "Журнал науки", 2020, 12, true, 25, 42};
-    Publication p2 = {"Кванты", "Петров", "К.С.", "Физика", 2021, 5, false, 10, 8};
+    Publication p2 = {"Кванты", "cnров", "К.С.", "Физика", 2021, 5, false, 16, 6};
+    Publication p3 = {"Кваsdgы", "cnтров", "К.С.", "Физика", 2641, 5, true, 1046, 56};
+    Publication p4 = {"sgsg", "ncncов", "К.С.", "Физика", 2097, 5, false, 17, 3};
+    Publication p5 = {"dfhgанты", "ров", "К.С.", "Физика", 221, 5, true, 1, 86};
+
+    printf("%d\n",compare_publications(&p1,&p2));
 
 
     Stack my_stack;
@@ -29,6 +36,9 @@ int main (){
     stack_push(&my_stack, &p);
     stack_push(&my_stack, &p1);
     stack_push(&my_stack, &p2);
+    stack_push(&my_stack, &p3);
+    stack_push(&my_stack, &p4);
+    stack_push(&my_stack, &p5);
 
     printf("Количество элементов в стэке: ");
     printf("%d\n",stack_size(my_stack));
@@ -45,6 +55,9 @@ int main (){
 
     puts("Удаление элемента");
     stack_pop(&my_stack);
+
+    puts("Сортировка стэка");
+    insertion_sort(my_stack);
 
     puts("Вывод стэка после удаление первого элемента");
     show_stack_csv(my_stack);
