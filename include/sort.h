@@ -1,3 +1,4 @@
+#pragma once
 #include "data.h"
 #include "stack.h"
 #include <string.h>

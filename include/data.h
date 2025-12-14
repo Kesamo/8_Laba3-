@@ -27,6 +27,7 @@ typedef struct StackNode {
 
 typedef StackNode* Stack;
 
-int read_publication_csv(FILE *file, Publication *p);
+int read_publication_csv(FILE* file, Publication* p);
 
+int save_stack_to_csv(Stack s);
 

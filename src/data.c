@@ -14,15 +14,19 @@
 
 int read_publication_csv(FILE *file, Publication *pub){
 
-    char str[1024];
+    if (!file || !pub) return -1;
 
-    if(fgets(str,sizeof(str), file) == NULL){
+    char str[1024];
+    if (fgets(str, sizeof(str), file) == NULL) {
         return 0;
     }
 
     str[strcspn(str, "\n")] = '\0';
+    str[strcspn(str, "\r")] = '\0';
 
-    char *token = strtok(str, ",");
+    char *token;
+
+    token = strtok(str, ",");
     if(!token) return 0;
     snprintf(pub->title, sizeof(pub->title), "%s", token);
 
@@ -60,4 +64,42 @@ int read_publication_csv(FILE *file, Publication *pub){
 
     return 1;
 
+}
+
+
+/**
+ * @brief Сохраняет стек в csv
+ * @param file
+ * @param s
+ * @return 0 — успех, -1 — ошибка
+ */
+
+int save_stack_to_csv(Stack s) {
+
+    FILE* file = fopen("output.csv", "w");
+
+    if (!file) return -1;
+
+    Stack temp = NULL;
+    Publication item;
+
+    while (s != NULL) {
+        item = s->data;
+
+        fprintf(file, "%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
+                item.title,
+                item.author_surname,
+                item.author_initials,
+                item.journal,
+                item.year,
+                item.volume,
+                item.in_rinc ? "true" : "false",
+                item.pages,
+                item.citations);
+
+        s = s->next;
+    }
+
+    fclose(file);
+    return 0;
 }

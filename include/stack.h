@@ -14,8 +14,10 @@ int stack_pop(Stack* s);
 
 int stack_peek(Stack s, Publication* out_pub);
 
-int stack_clear(Stack *s);
+int stack_clear(Stack* s);
 
 size_t stack_size(Stack s);
 
 bool stack_empty(Stack s);
+
+int stack_peek_at(Stack* main_stack, u_int index, Publication* out_pub);

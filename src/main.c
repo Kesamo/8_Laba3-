@@ -40,6 +40,7 @@ int main (){
     stack_push(&my_stack, &p4);
     stack_push(&my_stack, &p5);
 
+
     printf("Количество элементов в стэке: ");
     printf("%d\n",stack_size(my_stack));
 
@@ -58,6 +59,8 @@ int main (){
 
     puts("Сортировка стэка");
     insertion_sort(my_stack);
+
+    save_stack_to_csv(my_stack);
 
     puts("Вывод стэка после удаление первого элемента");
     show_stack_csv(my_stack);
