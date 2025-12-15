@@ -5,7 +5,7 @@ TARGET = bin\app.exe
 SRCDIR = src
 OBJDIR = build
 
-SRC = main.c data.c stack.c compare.c sort.c
+SRC = main.c data.c stack.c compare.c sort.c table.c
 
 RMCMD = del /f
 

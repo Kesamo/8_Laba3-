@@ -32,28 +32,41 @@ void stack_init(Stack* s) {
  * @param top 
  */
 
-void show_stack_csv(const Stack top) {
-    const StackNode* current = top;
+
+void show_stack_csv(Stack top){
     if (stack_empty(top)) {
         printf("Стэк пуст\n");
         return;
     }
-    while (current != NULL) {
-        printf("%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
-            current->data.title,
-            current->data.author_surname,
-            current->data.author_initials,
-            current->data.journal,
-            current->data.year,
-            current->data.volume,
-            current->data.in_rinc ? "true" : "false",
-            current->data.pages,
-            current->data.citations
-        );
-        current = current->next;
-    }
-}
+    Stack helper;
+    stack_init(&helper);
+    Publication top_stack;
 
+    while (!stack_empty(top))
+    {
+        stack_peek(top,&top_stack);
+        printf("%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
+            top_stack.title,
+            top_stack.author_surname,
+            top_stack.author_initials,
+            top_stack.journal,
+            top_stack.year,
+            top_stack.volume,
+            top_stack.in_rinc ? "true" : "false",
+            top_stack.pages,
+            top_stack.citations
+        );
+        stack_pop(&top);
+        stack_push(&helper,&top_stack);
+    }
+    while (!stack_empty(helper))
+    {
+        stack_peek(helper,&top_stack);
+        stack_pop(&helper);
+        stack_push(&top,&top_stack);
+    }
+    
+}
 
 /**
  * @brief 
@@ -70,18 +83,6 @@ int stack_pop(Stack* s) {
     StackNode* old_top = *s;
     *s = (*s)->next;
 
-    printf("Deleted: %s,%s,%s,%s,%u,%u,%s,%u,%u\n",
-        old_top->data.title,
-        old_top->data.author_surname,
-        old_top->data.author_initials,
-        old_top->data.journal,
-        old_top->data.year,
-        old_top->data.volume,
-        old_top->data.in_rinc ? "true" : "false",
-        old_top->data.pages,
-        old_top->data.citations
-    );
-
     free(old_top);
     return 0;
 }
@@ -93,12 +94,22 @@ bool stack_empty(Stack s) {
 }
 
 
-size_t stack_size(Stack s) { 
-    size_t count = 0;
-    StackNode* current = s;
-    while (current) {
+u_int stack_size(Stack s) { 
+    u_int count = 0;
+    Stack helper;
+    stack_init(&helper);
+    Publication top_stack;
+    while (!stack_empty(s)) {
+        stack_peek(s,&top_stack);
+        stack_pop(&s);
+        stack_push(&helper,&top_stack);
         count++;
-        current = current->next;
+    }
+    while (!stack_empty(helper))
+    {
+        stack_peek(helper,&top_stack);
+        stack_pop(&helper);
+        stack_push(&s,&top_stack);
     }
     return count;
 }
