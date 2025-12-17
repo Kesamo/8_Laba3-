@@ -35,7 +35,7 @@ void stack_init(Stack* s) {
 
 void show_stack_csv(Stack top){
     if (stack_empty(top)) {
-        printf("Стэк пуст\n");
+        puts("Стэк пуст\n");
         return;
     }
     Stack helper;
@@ -76,7 +76,7 @@ void show_stack_csv(Stack top){
 
 int stack_pop(Stack* s) {
     if (stack_empty(*s)) {
-        printf("Стэк пуст\n");
+        puts("Стэк пуст\n");
         return 1;
     }
 
@@ -126,7 +126,7 @@ int stack_peek(Stack s, Publication* out_pub) {
 int stack_clear(Stack* s){
     int check = 0;
     if (s == NULL){
-        printf("Ошибка: передан нулевой указатель на стек\n");
+        puts("Ошибка: передан нулевой указатель на стек\n");
         return 1;
     }
     while(*s != NULL){
@@ -135,7 +135,6 @@ int stack_clear(Stack* s){
             return check;
         }
     }
-    printf("Стэк очищен\n");
     return 0;
 
 }

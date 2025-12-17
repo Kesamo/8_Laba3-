@@ -2,15 +2,26 @@ CC = gcc
 CFLAGS = -Iinclude -O2 -DBGLVL=2
 TARGET = bin\app.exe
 
+
 SRCDIR = src
 OBJDIR = build
+TESTDIR = tests
+BIN=bin
 
-SRC = main.c data.c stack.c compare.c sort.c table.c
+SRC = main.c data.c stack.c compare.c table.c merge_sort.c insertion_sort.c
+OBJ = $(SRC:%.c=%.o)
+OBJS=$(OBJ:%=$(OBJDIR)/%)
+LIB_OBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS))
 
 RMCMD = del /f
 
-OBJ = $(SRC:%.c=%.o)
-OBJS=$(OBJ:%=$(OBJDIR)/%) 
+TEST_SRC = test_merge_sort.c test_insertion_sort.c
+TEST_OBJ = $(TEST_SRC:%.c=%.o)
+TEST_OBJS=$(TEST_OBJ:%=$(OBJDIR)/%) 
+
+TEST_TARGET = test_merge_sort test_insertion_sort
+TEST_EXES = $(addprefix $(BIN)/, $(addsuffix .exe, $(TEST_TARGET)))
+
 
 $(TARGET): $(OBJS)
 	$(CC) $^ -o $@
@@ -18,18 +29,31 @@ $(TARGET): $(OBJS)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/%.o: $(TESTDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: all clean cleanall
+$(BIN)/%.exe: $(OBJDIR)/%.o $(LIB_OBJS)
+	$(CC) $^ -o $@
+
+$(TEST_TARGET):
+	$(MAKE) $(BIN)/$@.exe
+
+
+.PHONY: all test clean cleanall test-merge test-insert
+
+test-merge: $(BIN)/test_merge_sort.exe
+
+
+test-insert: $(BIN)/test_insertion_sort.exe
+
+
+test: $(TEST_EXES)
+	@$(BIN)/test_merge_sort.exe
+	@$(BIN)/test_insertion_sort.exe
 
 clean:
 	$(RMCMD) $(TARGET)
 
 cleanall:
-	$(RMCMD) $(TARGET)
-	$(RMCMD) build\*.o
-	
-	
-
-
- 
-	
+	$(RMCMD) $(BIN)\*.exe
+	$(RMCMD) $(OBJDIR)\*.o
