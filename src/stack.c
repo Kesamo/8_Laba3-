@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <windows.h>
 #include "stack.h"
+#include "generate.h"
 
 /**
  * @brief Добавление элемента в начало
@@ -219,3 +220,12 @@ u_int stack_to_array(Stack* s, Publication* arr, u_int max_size) {
     return count;
 }
 
+void stack_generate(Stack* s, u_int n) {
+    if (!s) return;
+
+    Publication pub;
+    for (u_int i = 0; i < n; i++) {
+        generate(&pub);
+        stack_push(s, &pub);
+    }
+}
