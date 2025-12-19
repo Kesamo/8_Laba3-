@@ -1,6 +1,7 @@
 #include "table.h"
 #include <string.h>
 #include <stdio.h>
+#include <windows.h>
 
 static void print_padded(FILE* f, const char* text, u_int field_width) {
     if (!f) return;
@@ -31,6 +32,10 @@ static void print_padded(FILE* f, const char* text, u_int field_width) {
 }
 
 void print_table(Stack stack, FILE* output_file) {
+
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
     if (!output_file) return;
 
     const u_int title = 30;

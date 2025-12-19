@@ -8,7 +8,7 @@ void stack_push(Stack* s, const Publication* pub);
 
 void stack_init(Stack* s);
 
-void show_stack_csv(Stack top);
+void show_stack_csv(Stack top, FILE* output);
 
 int stack_pop(Stack* s);
 

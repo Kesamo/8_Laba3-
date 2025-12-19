@@ -12,6 +12,20 @@
  * @return int 
  */
 
+ int parse_uint(const char* str, u_int* out) {
+    if (!str || !out) return 0;
+    
+    char* end;
+    long val = strtol(str, &end, 10);
+    
+    if (*end != '\0') {
+        return 0;
+    }
+    
+    *out = (u_int)val;
+    return 1;
+}
+
 int read_publication_csv(FILE *file, Publication *pub){
 
     if (!file || !pub) return -1;
@@ -43,24 +57,20 @@ int read_publication_csv(FILE *file, Publication *pub){
     snprintf(pub->journal, sizeof(pub->journal), "%s", token);
 
     token = strtok(NULL, ",");
-    if(!token) return 0;
-    pub->year = atoi(token);
+    if (!token || !parse_uint(token, &pub->year)) return 0;
 
     token = strtok(NULL, ",");
-    if(!token) return 0;
-    pub->volume = atoi(token);
+    if (!token || !parse_uint(token, &pub->volume)) return 0;
 
     token = strtok(NULL, ",");
     if (!token) return 0;
     pub->in_rinc = (strcmp(token, "true") == 0);
 
     token = strtok(NULL, ",");
-    if (!token) return 0;
-    pub->pages = atoi(token);
+    if (!token || !parse_uint(token, &pub->pages)) return 0;
 
     token = strtok(NULL, ",");
-    if (!token) return 0;
-    pub->citations = atoi(token);
+    if (!token || !parse_uint(token, &pub->citations)) return 0;
 
     return 1;
 

@@ -4,4 +4,4 @@
 #include <string.h>
 #include <stdio.h>
 
-void insertion_sort(Stack my_stack);
+void insertion_sort(Stack* my_stack);

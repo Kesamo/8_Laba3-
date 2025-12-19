@@ -1,4 +1,5 @@
 #include "compare.h"
+#include "stack.h"
 typedef unsigned int u_int;
 
  int cmp_int(u_int p1, u_int p2) {
@@ -40,4 +41,19 @@ int compare_publications(const Publication* p1, const Publication* p2) {
     if (cmp) return cmp;
 
     return 0;
+}
+
+void reverse_stack(Stack* s) {
+    if (!s) return;
+    
+    Stack helper;
+    stack_init(&helper);
+    Publication top_stack;
+
+    while (!stack_empty(*s)) {
+        stack_peek(*s, &top_stack);
+        stack_pop(s);
+        stack_push(&helper, &top_stack);
+    }
+    *s = helper;
 }

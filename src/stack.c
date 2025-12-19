@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <windows.h>
 #include "stack.h"
 
 /**
@@ -11,6 +12,10 @@
 
 void stack_push(Stack* s, const Publication* pub) {
     StackNode* node = malloc(sizeof(StackNode));
+    if(!node){
+        puts("Стэк пустой");
+        return;
+    }
     node->data = *pub;
     node->next = *s;
     *s = node;
@@ -33,19 +38,24 @@ void stack_init(Stack* s) {
  */
 
 
-void show_stack_csv(Stack top){
+void show_stack_csv(Stack top, FILE* output){
     if (stack_empty(top)) {
-        puts("Стэк пуст\n");
+        puts("Стэк пуст");
         return;
     }
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
     Stack helper;
     stack_init(&helper);
     Publication top_stack;
 
+    FILE* out = (output) ? output : stdout;
+
     while (!stack_empty(top))
     {
         stack_peek(top,&top_stack);
-        printf("%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
+        fprintf(out,"%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
             top_stack.title,
             top_stack.author_surname,
             top_stack.author_initials,
