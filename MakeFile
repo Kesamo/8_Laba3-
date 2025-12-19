@@ -8,7 +8,7 @@ OBJDIR = build
 TESTDIR = tests
 BIN=bin
 
-SRC = main.c data.c stack.c compare.c table.c merge_sort.c insertion_sort.c flag.c
+SRC = main.c data.c stack.c compare.c table.c merge_sort.c insertion_sort.c flag.c generate.c
 OBJ = $(SRC:%.c=%.o)
 OBJS=$(OBJ:%=$(OBJDIR)/%)
 LIB_OBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS))

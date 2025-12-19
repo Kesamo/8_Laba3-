@@ -31,3 +31,5 @@ int read_publication_csv(FILE* file, Publication* p);
 
 int save_stack_to_csv(Stack s);
 
+int parse_uint(const char* str, u_int* out);
+

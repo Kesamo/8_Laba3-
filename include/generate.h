@@ -5,4 +5,4 @@
 #include "data.h"
 
 void generate(Publication* pub);
-
+void init_random();

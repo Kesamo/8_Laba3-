@@ -1,8 +1,9 @@
 #pragma once
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include "data.h"
 typedef unsigned int u_int;
 
 typedef struct {
@@ -14,6 +15,8 @@ typedef struct {
     bool input_csv;
     bool output_csv;
     bool print;
+    bool generat;
+    u_int num;
 } Args;
 
 

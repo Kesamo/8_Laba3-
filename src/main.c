@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "table.h"
 #include "insertion_sort.h"
+#include "generate.h"
 #include "compare.h" 
 
 
@@ -55,7 +56,7 @@ int main (int argc, char* argv[]){
         if (args.output_csv) {
             out = fopen(args.out_file, "w");
             if (!out) {
-                pfprintf(stderr,"Не удалось открыть файл для записи\n");
+                fprintf(stderr,"Не удалось открыть файл для записи\n");
                 stack_clear(&stack);
                 free_args(&args);
                 return 1;
@@ -103,7 +104,7 @@ int main (int argc, char* argv[]){
         }
 
         Publication pub;
-        while (read_ppublication_csv(in,&pub) == 1){
+        while (read_publication_csv(in,&pub) == 1){
             stack_push(&stack,&pub);
         }
         fclose(in);
@@ -130,4 +131,35 @@ int main (int argc, char* argv[]){
             return 0;
 
     }
+
+    if(args.generat){
+        Stack stack;
+        stack_init(&stack);
+        FILE* out = stdout;
+        init_random();
+        stack_generate(&stack,args.num);
+
+        if (args.output_csv) {
+            out = fopen(args.out_file, "w");
+            if (!out) {
+                fprintf(stderr,"Не удалось открыть файл для записи");
+                stack_clear(&stack);
+                free_args(&args);
+                return 1;
+            }
+        }
+
+        show_stack_csv(stack,out);
+
+        if (args.output_csv) {
+            fclose(out);
+        }
+
+        stack_clear(&stack);
+        free_args(&args);
+        return 0;
+
+
+    }
+
 }

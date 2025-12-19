@@ -22,6 +22,7 @@ int parse_args(int argc, char* argv[], Args* args){
     args->input_csv = false;
     args->output_csv = false;
     args->print = false;
+    args->generat = false;
 
     for(u_int i = 1; i < (u_int)argc; ++i){
         char* arg = argv[i];
@@ -78,6 +79,21 @@ int parse_args(int argc, char* argv[], Args* args){
                 return 0;
             }
             args->input_file = strdup(s);
+        }
+        else if(strncmp(arg, "-g",2) == 0 || strncmp(arg, "--generate=", 11) == 0){
+            args->generat = true;
+            char* value = NULL;
+            if(strncmp(arg, "--generate=", 11) == 0){
+                value = arg + 11;
+            }
+            else if(strncmp(arg, "-g", 2) == 0 && i+1 < argc){
+                value = argv[++i];
+            }
+            else{
+                fprintf(stderr, "Ошибка флага");
+                return 0;
+            }
+            parse_uint(value,&args->num); 
         }
         else {
             fprintf(stderr, "Неизвестный аргумент: %s\n", arg);

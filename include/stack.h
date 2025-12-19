@@ -21,3 +21,5 @@ u_int stack_size(Stack s);
 bool stack_empty(Stack s);
 
 int stack_peek_at(Stack* main_stack, u_int index, Publication* out_pub);
+
+void stack_generate(Stack* s, u_int n);
