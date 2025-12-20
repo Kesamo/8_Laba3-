@@ -9,8 +9,15 @@ typedef unsigned int u_int;
  int cmp_bool(bool p1, bool p2) {
     return (p1 > p2) ? 1 : (p1 < p2) ? -1 : 0;
 }
+/**
+ * @brief Компараторо по возрастанию
+ * 
+ * @param p1 
+ * @param p2 
+ * @return int -1 0 1
+ */
 
-int compare_publications(const Publication* p1, const Publication* p2) {
+int compare_asc(const Publication* p1, const Publication* p2) {
     int cmp;
 
     cmp = strcmp(p1->title, p2->title);
@@ -43,17 +50,14 @@ int compare_publications(const Publication* p1, const Publication* p2) {
     return 0;
 }
 
-void reverse_stack(Stack* s) {
-    if (!s) return;
-    
-    Stack helper;
-    stack_init(&helper);
-    Publication top_stack;
+/**
+ * @brief Компоратор по убыванию
+ * 
+ * @param p1 
+ * @param p2 
+ * @return int -1 0 1
+ */
 
-    while (!stack_empty(*s)) {
-        stack_peek(*s, &top_stack);
-        stack_pop(s);
-        stack_push(&helper, &top_stack);
-    }
-    *s = helper;
+int compare_desc(const Publication* p1, const Publication* p2){
+    return -compare_asc(p1, p2);
 }

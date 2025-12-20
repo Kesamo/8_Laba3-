@@ -2,7 +2,7 @@
 #include "compare.h"
 
 
-void insertion_sort(Stack* my_stack){
+void insertion_sort(Stack* my_stack, Comparator cmp){
     Stack helper;
     stack_init(&helper);
     Publication current;
@@ -15,7 +15,7 @@ void insertion_sort(Stack* my_stack){
 
         while(!stack_empty(helper)){
             stack_peek(helper,&top_helper);
-            if (compare_publications(&top_helper,&current) <= 0){
+            if (cmp(&top_helper,&current) <= 0){
                 break;
             }
 

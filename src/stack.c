@@ -14,7 +14,7 @@
 void stack_push(Stack* s, const Publication* pub) {
     StackNode* node = malloc(sizeof(StackNode));
     if(!node){
-        puts("Стэк пустой");
+        puts("Ошибка выделения памяти");
         return;
     }
     node->data = *pub;
@@ -23,7 +23,7 @@ void stack_push(Stack* s, const Publication* pub) {
 }
 
 /**
- * @brief Инициализация
+ * @brief Инициализация сэка
  * 
  * @param s 
  */
@@ -33,56 +33,10 @@ void stack_init(Stack* s) {
 }
 
 /**
- * @brief 
- * 
- * @param top 
- */
-
-
-void show_stack_csv(Stack top, FILE* output){
-    if (stack_empty(top)) {
-        puts("Стэк пуст");
-        return;
-    }
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
-
-    Stack helper;
-    stack_init(&helper);
-    Publication top_stack;
-
-    FILE* out = (output) ? output : stdout;
-
-    while (!stack_empty(top))
-    {
-        stack_peek(top,&top_stack);
-        fprintf(out,"%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
-            top_stack.title,
-            top_stack.author_surname,
-            top_stack.author_initials,
-            top_stack.journal,
-            top_stack.year,
-            top_stack.volume,
-            top_stack.in_rinc ? "true" : "false",
-            top_stack.pages,
-            top_stack.citations
-        );
-        stack_pop(&top);
-        stack_push(&helper,&top_stack);
-    }
-    while (!stack_empty(helper))
-    {
-        stack_peek(helper,&top_stack);
-        stack_pop(&helper);
-        stack_push(&top,&top_stack);
-    }
-    
-}
-
-/**
- * @brief 
+ * @brief Удаление верхнего элемента из стека
  * 
  * @param s 
+ * @return int 
  */
 
 int stack_pop(Stack* s) {
@@ -98,12 +52,24 @@ int stack_pop(Stack* s) {
     return 0;
 }
 
-
+/**
+ * @brief Проверка пустой стек или нет
+ * 
+ * @param s 
+ * @return true 
+ * @return false 
+ */
 
 bool stack_empty(Stack s) {
     return s == NULL;
 }
 
+/**
+ * @brief Функция возвращает количество элементов в стеке
+ * 
+ * @param s 
+ * @return u_int 
+ */
 
 u_int stack_size(Stack s) { 
     u_int count = 0;
@@ -125,14 +91,26 @@ u_int stack_size(Stack s) {
     return count;
 }
 
+/**
+ * @brief Вытаскивает верхний элемент из стека
+ * 
+ * @param s 
+ * @param out_pub 
+ * @return int 
+ */
+
 int stack_peek(Stack s, Publication* out_pub) {
     if (stack_empty(s)) return 0;
     *out_pub = s->data;
     return 1;
 }
 
-
-
+/**
+ * @brief Очищант стек
+ * 
+ * @param s 
+ * @return int 
+ */
 
 int stack_clear(Stack* s){
     int check = 0;
@@ -150,6 +128,14 @@ int stack_clear(Stack* s){
 
 }
 
+/**
+ * @brief Вытаскивет элемент по индексу
+ * 
+ * @param main_stack 
+ * @param index 
+ * @param out_pub 
+ * @return int 
+ */
 
 int stack_peek_at(Stack* main_stack, u_int index, Publication* out_pub) {
     if (!main_stack || !out_pub) return 1;
@@ -187,9 +173,23 @@ int stack_peek_at(Stack* main_stack, u_int index, Publication* out_pub) {
     }
 }
 
+/**
+ * @brief Возвращает указатель на вершину
+ * 
+ * @param s 
+ * @return Stack* 
+ */
+
 Stack* get_top(Stack* s) {
     return s;
 }
+
+/**
+ * @brief Возвращает указатель на последний узел стека
+ * 
+ * @param s 
+ * @return Stack 
+ */
 
 Stack get_bottom(Stack s) {
     if (!s) return NULL;
@@ -199,6 +199,13 @@ Stack get_bottom(Stack s) {
     return s; 
 }
 
+/**
+ * @brief Из масива в стэк
+ * 
+ * @param s 
+ * @param arr 
+ * @param n 
+ */
 
 void array_to_stack(Stack* s, const Publication* arr, u_int n) {
     if (!s || !arr) return;
@@ -210,15 +217,29 @@ void array_to_stack(Stack* s, const Publication* arr, u_int n) {
     }
 }
 
-u_int stack_to_array(Stack* s, Publication* arr, u_int max_size) {
+/**
+ * @brief Из стека в масив
+ * 
+ * @param s 
+ * @param arr 
+ * @param max_size 
+ */
+
+void stack_to_array(Stack* s, Publication* arr, u_int max_size) {
     u_int count = 0;
     while (!stack_empty(*s) && count < max_size) {
         stack_peek(*s, &arr[count]);
         stack_pop(s);
         count++;
     }
-    return count;
 }
+
+/**
+ * @brief генерирует случайные данные в соответствии со схемой данных
+ * 
+ * @param s 
+ * @param n 
+ */
 
 void stack_generate(Stack* s, u_int n) {
     if (!s) return;
@@ -228,4 +249,25 @@ void stack_generate(Stack* s, u_int n) {
         generate(&pub);
         stack_push(s, &pub);
     }
+}
+
+/**
+ * @brief Переварачиает стэк
+ * 
+ * @param s 
+ */
+
+void reverse_stack(Stack* s) {
+    if (!s) return;
+    
+    Stack helper;
+    stack_init(&helper);
+    Publication top_stack;
+
+    while (!stack_empty(*s)) {
+        stack_peek(*s, &top_stack);
+        stack_pop(s);
+        stack_push(&helper, &top_stack);
+    }
+    *s = helper;
 }

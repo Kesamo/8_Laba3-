@@ -1,6 +1,7 @@
 #include "merge_sort.h"
 #include "compare.h"
 
+
 void split_stack_into_two(Stack* s, Stack* front, Stack* back) {
     stack_init(front);
     stack_init(back);
@@ -46,7 +47,7 @@ void split_stack_into_two(Stack* s, Stack* front, Stack* back) {
     }
 }
 
-Stack stack_merge_sorted(Stack* left, Stack* right) {
+Stack stack_merge_sorted(Stack* left, Stack* right, Comparator cmp){
     Stack result;
     stack_init(&result);
     Publication left_item;
@@ -56,7 +57,7 @@ Stack stack_merge_sorted(Stack* left, Stack* right) {
         stack_peek(*left, &left_item);
         stack_peek(*right, &right_item);
 
-        if (compare_publications(&left_item, &right_item) <= 0) {
+        if (cmp(&left_item, &right_item) <= 0) {
             stack_pop(left);
             stack_push(&result, &left_item);
         } else {
@@ -89,7 +90,7 @@ Stack stack_merge_sorted(Stack* left, Stack* right) {
     return helper;
 }
 
-void stack_merge_sort(Stack* s) {
+void stack_merge_sort(Stack* s, Comparator cmp) {
     if (!s || stack_empty(*s) || stack_size(*s) <= 1) {
         return;
     }
@@ -101,10 +102,10 @@ void stack_merge_sort(Stack* s) {
 
     split_stack_into_two(s, &front, &back);
 
-    stack_merge_sort(&front);
-    stack_merge_sort(&back);
+    stack_merge_sort(&front,cmp);
+    stack_merge_sort(&back,cmp);
 
-    Stack merged = stack_merge_sorted(&front, &back);
+    Stack merged = stack_merge_sorted(&front, &back, cmp);
 
     stack_clear(s);
     *s = merged;

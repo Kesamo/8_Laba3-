@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include "merge_sort.h"
+#include "compare.h"
 
 void test_merge_sort() {
     Stack s;
@@ -15,7 +16,7 @@ void test_merge_sort() {
     stack_push(&s, &p2);
     stack_push(&s, &p3);
 
-    stack_merge_sort(&s);
+    stack_merge_sort(&s,compare_asc);
 
     Publication out;
 

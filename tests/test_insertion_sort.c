@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include "insertion_sort.h"
+#include "compare.h"
 
 void test_insertion_sort() {
     Stack s;
@@ -15,7 +16,7 @@ void test_insertion_sort() {
     stack_push(&s, &p2);
     stack_push(&s, &p3);
 
-    insertion_sort(&s);
+    insertion_sort(&s,compare_asc);
 
     Publication out;
 

@@ -22,6 +22,10 @@ char* journals[] = {
 
 #define size(arr) (sizeof(arr) / sizeof((arr)[0]))
 
+/**
+ * @brief Инициализация генератора, чтобы значения были разные
+ * 
+ */
 
 void init_random() {
     srand((u_int)time(NULL));

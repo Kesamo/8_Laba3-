@@ -13,7 +13,7 @@
 int main (int argc, char* argv[]){
     Args args;
 
-    if(!parse_args(argc,argv,&args)){
+    if(parse_args(argc,argv,&args)){
         return 1;
     }
 
@@ -46,10 +46,10 @@ int main (int argc, char* argv[]){
             fclose(in);
         }
 
-        insertion_sort(&stack);
+        insertion_sort(&stack,compare_asc);
 
         if (strcmp(args.flag, "desc") == 0){
-            reverse_stack(&stack);
+            insertion_sort(&stack,compare_desc);
         }
 
          FILE* out = stdout;
@@ -87,6 +87,7 @@ int main (int argc, char* argv[]){
                 free_args(&args);
                 return 1;
             }
+        }
             else{
                 char file_name [256];
                 printf("Введите имя файла: ");
@@ -94,6 +95,7 @@ int main (int argc, char* argv[]){
                     free_args(&args);
                     return 1;
                 }
+                file_name[strcspn(file_name, "\r\n")] = '\0';
                 in = fopen(file_name,"r");
                 if(!in){
                     fprintf(stderr,"Не удалось открыть входной файл\n");
@@ -101,7 +103,7 @@ int main (int argc, char* argv[]){
                     return 1;
                 }
             }
-        }
+        
 
         Publication pub;
         while (read_publication_csv(in,&pub) == 1){

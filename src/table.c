@@ -31,6 +31,8 @@ static void print_padded(FILE* f, const char* text, u_int field_width) {
     }
 }
 
+
+
 void print_table(Stack stack, FILE* output_file) {
 
     SetConsoleOutputCP(CP_UTF8);

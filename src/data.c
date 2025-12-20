@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <windows.h>
+#include "stack.h"
 #include "data.h"
 
 /**
- * @brief Функция считывающая формат csv
+ * @brief 
  * 
- * @param file 
- * @param pub 
- * @return int 
+ * @param str 
+ * @param out 
+ * @return int 1 - ошибка ввода 0 - функция выполненна коректно
  */
 
  int parse_uint(const char* str, u_int* out) {
@@ -25,6 +27,14 @@
     *out = (u_int)val;
     return 1;
 }
+
+/**
+ * @brief Чтение из cmd и файла
+ * 
+ * @param file 
+ * @param pub 
+ * @return int 
+ */
 
 int read_publication_csv(FILE *file, Publication *pub){
 
@@ -81,14 +91,14 @@ int read_publication_csv(FILE *file, Publication *pub){
  * @brief Сохраняет стек в csv
  * @param file
  * @param s
- * @return 0 — успех, -1 — ошибка
+ * @return 0 — успех, 1 — ошибка
  */
 
 int save_stack_to_csv(Stack s) {
 
     FILE* file = fopen("output.csv", "w");
 
-    if (!file) return -1;
+    if (!file) return 1;
 
     Stack temp = NULL;
     Publication item;
@@ -112,4 +122,51 @@ int save_stack_to_csv(Stack s) {
 
     fclose(file);
     return 0;
+}
+
+/**
+ * @brief Вывод и сохранение фала в формате сьв
+ * 
+ * @param top 
+ * @param output 
+ */
+
+void show_stack_csv(Stack top, FILE* output){
+    if (stack_empty(top)) {
+        puts("Стэк пуст");
+        return;
+    }
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
+    Stack helper;
+    stack_init(&helper);
+    Publication top_stack;
+
+    FILE* out = (output) ? output : stdout;
+
+    while (!stack_empty(top))
+    {
+        stack_peek(top,&top_stack);
+        fprintf(out,"%s,%s,%s,%s,%u,%u,%s,%u,%u\n",
+            top_stack.title,
+            top_stack.author_surname,
+            top_stack.author_initials,
+            top_stack.journal,
+            top_stack.year,
+            top_stack.volume,
+            top_stack.in_rinc ? "true" : "false",
+            top_stack.pages,
+            top_stack.citations
+        );
+        stack_pop(&top);
+        stack_push(&helper,&top_stack);
+    }
+    while (!stack_empty(helper))
+    {
+        stack_peek(helper,&top_stack);
+        stack_pop(&helper);
+        stack_push(&top,&top_stack);
+    }
+    
 }

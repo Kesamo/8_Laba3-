@@ -3,6 +3,11 @@
 #include <string.h>
 #include "flag.h"
 
+/**
+ * @brief Вывод help
+ * 
+ */
+
 void print_help(void) {
     puts("\t-h, --help");
     puts("\t-g, --generate=N");
@@ -12,6 +17,15 @@ void print_help(void) {
     puts("\t-o, --out=FILE");
     puts("\t-p, --print");
 }
+
+/**
+ * @brief  Парсит аргументы командной строки и заполняет структуру Args.
+ * 
+ * @param argc 
+ * @param argv 
+ * @param args 
+ * @return int 
+ */
 
 int parse_args(int argc, char* argv[], Args* args){
     args->out_file = NULL;
@@ -47,7 +61,7 @@ int parse_args(int argc, char* argv[], Args* args){
             }
             else{
                 fprintf(stderr, "Ошибка флага");
-                return 0;
+                return 1;
             }
             args->out_file = s;
         }
@@ -61,7 +75,7 @@ int parse_args(int argc, char* argv[], Args* args){
             }
             else{
                 fprintf(stderr, "Ошибка флага");
-                return 0;
+                return 1;
             }
             args->flag = strdup(s);
         }
@@ -76,7 +90,7 @@ int parse_args(int argc, char* argv[], Args* args){
             }
             else{
                 fprintf(stderr, "Ошибка флага");
-                return 0;
+                return 1;
             }
             args->input_file = strdup(s);
         }
@@ -91,20 +105,26 @@ int parse_args(int argc, char* argv[], Args* args){
             }
             else{
                 fprintf(stderr, "Ошибка флага");
-                return 0;
+                return 1;
             }
             parse_uint(value,&args->num); 
         }
         else {
             fprintf(stderr, "Неизвестный аргумент: %s\n", arg);
             print_help();
-            return 0;
+            return 1;
         }
         
     }
-    return 1;
+    return 0;
 }
     
+/**
+ * @brief Очистка памяти
+ * 
+ * @param args 
+ */
+
 void free_args(Args* args) {
     if (args) {
         free(args->out_file);

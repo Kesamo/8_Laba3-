@@ -33,3 +33,5 @@ int save_stack_to_csv(Stack s);
 
 int parse_uint(const char* str, u_int* out);
 
+void show_stack_csv(Stack top, FILE* output);
+
