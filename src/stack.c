@@ -271,3 +271,83 @@ void reverse_stack(Stack* s) {
     }
     *s = helper;
 }
+
+/**
+ * @brief Удаление элемента по индексу
+ * 
+ * @param s 
+ * @param index 
+ * @return int 
+ */
+
+int stack_pop_at(Stack* s, u_int index) {
+    if (!s) return 0;
+
+    Stack help1;
+    stack_init(&help1);
+    Stack help2 ;
+    stack_init(&help2);
+    Publication item;
+
+    while (!stack_empty(*s)) {
+        stack_peek(*s, &item);
+        stack_pop(s);
+        stack_push(&help1, &item);
+    }
+
+    u_int pos = 0;
+    while (!stack_empty(help1)) {
+        stack_peek(help1, &item);
+        stack_pop(&help1);
+        if (pos != index) {
+            stack_push(&help2, &item);
+        }
+        pos++;
+    }
+
+    while (!stack_empty(help2)) {
+        stack_peek(help2, &item);
+        stack_pop(&help2);
+        stack_push(s, &item);
+    }
+
+    return 1;
+}
+
+int stack_push_at(Stack* s, u_int index, const Publication* pub) {
+    if (!s || !pub) return 0;
+
+    Stack help1;
+    stack_init(&help1);
+    Stack help2;
+    stack_init(&help2);
+    Publication item;
+
+    while (!stack_empty(*s)) {
+        stack_peek(*s, &item);
+        stack_pop(s);
+        stack_push(&help1, &item);
+    }
+
+    u_int pos = 0;
+    while (!stack_empty(help1) || (pos == index && stack_empty(help1))) {
+        if (pos == index) {
+            stack_push(&help2, pub);
+            if (stack_empty(help1)) break;
+        }
+        if (!stack_empty(help1)) {
+            stack_peek(help1, &item);
+            stack_pop(&help1);
+            stack_push(&help2, &item);
+        }
+        pos++;
+    }
+
+    while (!stack_empty(help2)) {
+        stack_peek(help2, &item);
+        stack_pop(&help2);
+        stack_push(s, &item);
+    }
+
+    return 1;
+}
